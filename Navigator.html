@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_blank">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chill Snorlax Central</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --snorlax-blue: #4a6fa5;
+      --snorlax-cream: #f5f1dc;
+      --accent: #ffd166;
+      --shadow: 6px 6px 0 #000;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; user-select:none; }
+    body {
+      min-height: 100vh;
+      font-family: 'Press Start 2P', cursive;
+      color: #fff;
+      padding: 40px 20px 80px;
+    }
+
+    /* Background */
+    #snorlax-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: url("https://cdn.jsdelivr.net/gh/n10cd1/wow@main/wt2pwz5x22me1.gif") center/cover no-repeat;
+      image-rendering: pixelated;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.02),
+        rgba(255,255,255,0.02) 2px,
+        rgba(0,0,0,0.18) 4px
+      );
+    }
+
+    main { max-width:1000px; margin:0 auto; }
+
+    /* Title */
+    .title-box {
+      background: rgba(0,0,0,0.65);
+      border: 4px solid var(--snorlax-cream);
+      padding: 26px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 90px;
+    }
+    .title-box h1 { font-size:2em; color:var(--accent); margin-bottom:12px; }
+    .title-box p { font-size:0.7em; color:#ddd; }
+
+    section { margin-bottom:110px; }
+    section:last-child { margin-bottom:0; }
+
+    .section-title {
+      font-size:1.2em;
+      color: var(--snorlax-cream);
+      border-bottom: 4px solid #fff;
+      padding-bottom: 12px;
+      margin-bottom: 36px;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .section-title::before { content:"💤 "; }
+
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:24px; }
+
+    .card {
+      background: var(--snorlax-cream);
+      border: 4px solid #000;
+      padding: 18px;
+      min-height: 115px;
+      text-decoration: none;
+      color: #000;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 0.75em;
+      transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+    }
+    .card i { font-size: 24px; color: var(--snorlax-blue); }
+    .card:hover { transform: translate(3px,3px); box-shadow:3px 3px 0 #000; background: var(--snorlax-blue); color:#fff; }
+    .card:hover i { color:#fff; }
+    .card:active { transform: translate(6px,6px); box-shadow:none; }
+
+    @media (max-width:600px){ .title-box h1{font-size:1.4em;} .grid{grid-template-columns:1fr 1fr;} }
+
+    /* Modal */
+    #settings-modal {
+      position: fixed;
+      inset:0;
+      background: rgba(0,0,0,0.75);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10000;
+    }
+    #settings-content {
+      background: rgba(74,111,165,0.95);
+      border:4px solid var(--snorlax-cream);
+      padding:30px;
+      width: 90%;
+      max-width: 450px;
+      text-align:center;
+      box-shadow: var(--shadow);
+      border-radius:15px;
+    }
+    #settings-content h2 { margin-bottom:20px; color:var(--accent); }
+    #settings-content input {
+      padding:10px;
+      font-size:1em;
+      width:80%;
+      border-radius:10px;
+      border:none;
+      outline:none;
+      margin-bottom:15px;
+    }
+    #settings-content button {
+      padding:10px 20px;
+      font-size:1em;
+      background: var(--accent);
+      color:#000;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      transition: all 0.2s;
+    }
+    #settings-content button:hover { background:#fff38d; }
+    #close-settings {
+      position:absolute;
+      top:10px; right:10px;
+      font-size:1.2em;
+      cursor:pointer;
+      color:#fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="snorlax-bg"></div>
+  <div class="scanlines"></div>
+
+  <main>
+    <div class="title-box">
+      <h1>SNORLAX NAV HUB</h1>
+      <p>Eat • Sleep • Game • Repeat</p>
+    </div>
+
+    <section>
+      <div class="section-title">GAMES</div>
+      <div class="grid">
+        <a class="card" href="#"><i class="fas fa-gamepad"></i><span>Main Games</span></a>
+        <a class="card" href="#"><i class="fas fa-bed"></i><span>Idle Games</span></a>
+        <a class="card" href="#"><i class="fas fa-dice"></i><span>Mini Games</span></a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">MEDIA</div>
+      <div class="grid">
+        <a class="card" href="#"><i class="fas fa-music"></i><span>Music</span></a>
+        <a class="card" href="https://sites.google.com/view/chillsnorlaxcentral/videos"><i class="fas fa-film"></i><span>Videos</span></a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">MISC</div>
+      <div class="grid">
+        <a class="card" id="settings-btn" href="javascript:void(0);"><i class="fas fa-gear"></i><span>Settings</span></a>
+        <a class="card" href="https://sites.google.com/view/chillsnorlaxcentral/apps"><i class="fas fa-apps"></i><span>Apps</span></a>
+        <a class="card" href="#"><i class="fas fa-bell"></i><span>Updates</span></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal">
+    <div id="settings-content">
+      <span id="close-settings">&times;</span>
+      <h2>Settings</h2>
+      <input type="text" id="new-title" placeholder="Enter new site title">
+      <br>
+      <button id="change-title">Change Title</button>
+    </div>
+  </div>
+
+  <script>
+    // Open modal
+    const modal = document.getElementById('settings-modal');
+    const settingsBtn = document.getElementById('settings-btn');
+    const closeBtn = document.getElementById('close-settings');
+    settingsBtn.onclick = () => { modal.style.display='flex'; }
+    closeBtn.onclick = () => { modal.style.display='none'; }
+    window.onclick = (e) => { if(e.target===modal) modal.style.display='none'; }
+
+    // Change site title locally
+    const changeTitleBtn = document.getElementById('change-title');
+    changeTitleBtn.onclick = () => {
+      const newTitle = document.getElementById('new-title').value.trim();
+      if(newTitle){
+        let titleTag = document.querySelector('title');
+        if(!titleTag){
+          titleTag = document.createElement('title');
+          document.head.appendChild(titleTag);
+        }
+        titleTag.textContent = newTitle;
+        document.title = newTitle;
+        alert("Page title changed to: " + newTitle);
+      } else alert("Please enter a title!");
+    }
+  </script>
+</body>
+</html>

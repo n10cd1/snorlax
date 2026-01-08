@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chill Snorlax Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+html {scroll-behavior: smooth;}
+body {
+    min-height:100vh;
+    font-family:'Press Start 2P', cursive;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+    line-height:1.6;
+}
+#snorlax-bg {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    background:#4a7c59 url('https://cdn.jsdelivr.net/gh/n10cd1/wow@main/wt2pwz5x22me1.gif') no-repeat center center;
+    background-size:cover;
+}
+#battery-container {
+    position: fixed;
+    top:20px;
+    left:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    z-index:10000;
+}
+#battery-oval {
+    width:100px;
+    height:50px;
+    background: rgba(0,0,0,0.7);
+    border-radius:25px;
+    border:3px solid rgba(255,255,255,0.5);
+    padding:5px;
+    position:relative;
+    overflow:hidden;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+}
+#battery-level {
+    height:100%;
+    border-radius:15px;
+    transition: width 0.5s ease;
+    background: linear-gradient(to right, #00ffaa, #00cc88);
+    min-width:5px;
+    width:100%;
+}
+#battery-percent {
+    font-family:'Silkscreen', monospace;
+    font-size:14px;
+    color:white;
+    min-width:40px;
+    text-align:center;
+    text-shadow:0 0 10px rgba(255,255,255,0.8);
+}
+#battery-icon {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:20px;
+    color:black;
+    opacity:0;
+    transition: all 0.3s ease;
+}
+.charging #battery-icon {
+    opacity:1;
+    color:#fffc00;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0%,100%{transform:translate(-50%,-50%) scale(1);}
+    50%{transform:translate(-50%,-50%) scale(1.2);}
+}
+#clock-container {
+    position: fixed;
+    top:20px;
+    right:20px;
+    background: rgba(0,0,0,0.7);
+    padding:15px 20px;
+    border-radius:10px;
+    font-family: 'Silkscreen', monospace;
+    color:white;
+    z-index:10000;
+    border:2px solid rgba(255,255,255,0.5);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+}
+#clock-time {font-size:24px; text-shadow:0 0 10px rgba(255,255,255,0.8);}
+#clock-date {font-size:14px; opacity:0.8; text-shadow:0 0 5px rgba(255,255,255,0.7);}
+#clock-container:hover #clock-date {opacity:1; transform:translateY(0);}
+#main-content {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:30px;
+    text-align:center;
+    width:100%;
+    max-width:900px;
+    padding:30px 20px;
+    margin:140px auto 0;
+    position:relative;
+    z-index:2;
+}
+.title {
+    font-size:3.5em;
+    margin-bottom:10px;
+    color:#fff;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1.2;
+    font-family:'Press Start 2P', cursive;
+    text-shadow:0 0 15px rgba(255,255,255,0.9);
+}
+.typing-container {display:inline-block; min-height:1.2em;}
+.typing-cursor {
+    display:inline-block;
+    width:10px;
+    height:1em;
+    background:white;
+    vertical-align:middle;
+    margin-left:5px;
+    animation: blink 0.7s infinite;
+    box-shadow:0 0 5px rgba(255,255,255,0.8);
+}
+@keyframes blink {0%,100%{opacity:1;} 50%{opacity:0;}}
+.search-container {width:90%; max-width:600px; position:relative; margin:15px 0 5px;}
+.search-bar {
+    width:100%;
+    padding:16px 24px;
+    padding-right:60px;
+    font-size:1.3em;
+    border:none;
+    border-radius:50px;
+    background: rgba(0,0,0,0.7);
+    color:#fff;
+    outline:none;
+    border:2px solid rgba(255,255,255,0.5);
+    font-family:'Lato',sans-serif;
+    transition:all 0.3s ease;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+}
+.search-bar:focus {border-color: rgba(255,255,255,0.8); box-shadow:0 0 10px rgba(255,255,255,0.5);}
+.search-button {
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    background:white;
+    color:black;
+    border:none;
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    font-size:1.2em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Press Start 2P', cursive;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+    cursor:pointer;
+}
+.search-button:hover {transform:translateY(-50%) scale(1.1); background:#ddd;}
+#nav-dock {
+    position: fixed;
+    top:25px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:15px;
+    padding:10px 25px;
+    background: rgba(0,0,0,0.6);
+    border-radius:30px;
+    border:2px solid rgba(255,255,255,0.4);
+    z-index:10000;
+    backdrop-filter: blur(5px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    max-width:95%;
+    overflow:visible;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.nav-item {
+    width:45px;
+    height:45px;
+    background: rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:1.2rem;
+    text-decoration:none;
+    transition: all 0.2s cubic-bezier(0.175,0.885,0.32,1.275);
+    position:relative;
+}
+.nav-item:hover {
+    transform:translateY(5px) scale(1.15);
+    background:#fff38d;
+    color:black;
+    box-shadow:0 5px 15px rgba(255,243,141,0.6);
+    border-color:transparent;
+}
+.nav-item::after {
+    content:attr(data-label);
+    position:absolute;
+    top:140%;
+    left:50%;
+    transform:translateX(-50%) scale(0);
+    background: rgba(0,0,0,0.8);
+    color:white;
+    padding:6px 10px;
+    border-radius:5px;
+    font-size:10px;
+    font-family:'Silkscreen', monospace;
+    white-space:nowrap;
+    opacity:0;
+    transition:all 0.2s ease;
+    pointer-events:none;
+    border:1px solid rgba(255,255,255,0.3);
+    z-index:102;
+}
+.nav-item:hover::after {transform:translateX(-50%) scale(1); opacity:1;}
+.discord-btn {
+    position: fixed;
+    bottom:30px;
+    right:30px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 20px;
+    background:white;
+    color:black;
+    border-radius:50px;
+    text-decoration:none;
+    font-family:'Lato',sans-serif;
+    font-size:1.1em;
+    font-weight:bold;
+    z-index:90;
+    transition:all 0.3s ease;
+    border:2px solid transparent;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+}
+.discord-btn i {color:black; transition: transform 0.3s ease;}
+.discord-btn:hover {background:#ddd; transform:translateY(-3px);}
+.discord-btn:hover i {transform:scale(1.2);}
+.toast {
+    position: fixed;
+    bottom:100px;
+    left:50%;
+    transform:translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color:white;
+    padding:12px 20px;
+    border-radius:5px;
+    z-index:10001;
+    font-family:'Lato',sans-serif;
+    opacity:0;
+    transition:opacity 0.3s ease;
+    pointer-events:none;
+}
+.toast.show {opacity:1;}
+</style>
+</head>
+<body>
+<div id="snorlax-bg"></div>
+
+<div id="battery-container">
+    <div id="battery-oval" class="charging">
+        <div id="battery-level"></div>
+        <i id="battery-icon" class="fas fa-bolt"></i>
+    </div>
+    <span id="battery-percent"></span>
+</div>
+
+<div id="clock-container">
+    <div id="clock-time"></div>
+    <div id="clock-date"></div>
+</div>
+
+<div id="nav-dock"></div>
+
+<main id="main-content">
+    <h1 class="title">
+        <span class="typing-container" id="typing-text">Chill Snorlax</span>
+        <span class="typing-cursor"></span>
+    </h1>
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search Chill Snorlax Central!" aria-label="Search">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+</main>
+
+<a href="https://discord.gg/YpxnycpwDW" class="discord-btn" target="_blank"><i class="fab fa-discord"></i> Join Discord</a>
+<div class="toast" id="toast"></div>
+
+<script>
+const messages = ["Chill Snorlax Central", "By: n10cd1", "Don't tell...", ":D"];
+const navItems = [
+    {icon:'fa-comments', label:'CHATROOM', url:'https://sites.google.com/view/chillsnorlaxcentral/page/chatroom'},
+    {icon:'fa-users', label:'STAFF', url:'https://sites.google.com/view/chillsnorlaxcentral/staff'},
+    {icon:'fa-handshake', label:'PARTNERS', url:'https://sites.google.com/view/chillsnorlaxcentral/page/partners'},
+    {icon:'fa-compass', label:'NAVIGATOR', url:'https://sites.google.com/view/chillsnorlaxcentral/snorlax-navigator'}
+];
+
+const typingEl = document.getElementById('typing-text');
+let msgIndex=0, charIndex=0, isDeleting=false;
+function typeWriter(){
+    const msg = messages[msgIndex];
+    if(isDeleting){
+        typingEl.textContent = msg.substring(0,charIndex-1);
+        charIndex--;
+        if(charIndex===0){isDeleting=false; msgIndex=(msgIndex+1)%messages.length; setTimeout(typeWriter,300);}
+        else setTimeout(typeWriter,40);
+    } else {
+        typingEl.textContent = msg.substring(0,charIndex+1);
+        charIndex++;
+        if(charIndex===msg.length){isDeleting=true; setTimeout(typeWriter,1200);}
+        else setTimeout(typeWriter,100);
+    }
+}
+
+function createNav(){
+    const dock = document.getElementById('nav-dock');
+    navItems.forEach(i=>{
+        const a=document.createElement('a');
+        a.href=i.url; a.className='nav-item'; a.target='_blank'; a.dataset.label=i.label;
+        a.innerHTML=`<i class="fas ${i.icon}"></i>`; dock.appendChild(a);
+    });
+}
+
+function updateClock(){
+    const now=new Date();
+    let h=now.getHours(), m=now.getMinutes().toString().padStart(2,'0'), s=now.getSeconds().toString().padStart(2,'0'), ampm=h>=12?'PM':'AM';
+    h=h%12; h=h?h:12;
+    document.getElementById('clock-time').textContent=`${h}:${m}:${s} ${ampm}`;
+    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('clock-date').textContent=`${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+}
+
+function updateBattery(){
+    if('getBattery' in navigator){
+        navigator.getBattery().then(battery=>{
+            function updateAll(){
+                const level=Math.floor(battery.level*100);
+                document.getElementById('battery-percent').textContent=`${level}%`;
+                const lvlEl=document.getElementById('battery-level');
+                lvlEl.style.width=`${level}%`;
+                const oval=document.getElementById('battery-oval');
+                if(battery.charging){oval.classList.add('charging'); lvlEl.style.background='linear-gradient(to right,#00ffff,#00cc88)';}
+                else {oval.classList.remove('charging'); 
+                    if(level<=20) lvlEl.style.background='linear-gradient(to right,#ff5555,#ff0000)';
+                    else if(level<=50) lvlEl.style.background='linear-gradient(to right,#ffaa00,#ffcc00)';
+                    else lvlEl.style.background='linear-gradient(to right,#00ffaa,#00cc88)';}
+            }
+            updateAll();
+            battery.addEventListener('levelchange',updateAll);
+            battery.addEventListener('chargingchange',updateAll);
+        }).catch(e=>document.getElementById('battery-container').style.display='none');
+    } else document.getElementById('battery-container').style.display='none';
+}
+
+function performSearch(){
+    const term=document.querySelector('.search-bar').value.trim();
+    if(term!==''){
+        window.open(`https://sites.google.com/view/chillsnorlaxcentral?search=${encodeURIComponent(term)}`,'_blank');
+        showToast(`Searching for "${term}"`);
+    } else showToast('Please enter a search term');
+}
+
+document.querySelector('.search-button').addEventListener('click', performSearch);
+document.querySelector('.search-bar').addEventListener('keypress',e=>{if(e.key==='Enter') performSearch();});
+
+function showToast(msg){
+    const toast=document.getElementById('toast');
+    toast.textContent=msg;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),3000);
+}
+
+function init(){
+    typeWriter();
+    createNav();
+    updateClock();
+    setInterval(updateClock,1000);
+    updateBattery();
+    showToast('Welcome to Chill Snorlax Central!');
+}
+
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
+else init();
+</script>
+</body>
+</html>

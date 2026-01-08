@@ -1,0 +1,102 @@
+<h1 id="main-title">Snorlax Games</h1>
+
+<div id="games-container" style="display:flex;flex-wrap:wrap;gap:20px;padding:40px;justify-content:center;"></div>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: #222 url('https://cdn.jsdelivr.net/gh/n10cd1/wow@main/wt2pwz5x22me1.gif') center center / cover no-repeat fixed;
+    color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #main-title {
+    margin-top: 50px;
+    font-size: 32px;
+    text-shadow: 4px 4px 0px #4a6fa5, 8px 8px 0px black;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .card {
+    width: 220px;
+    height: 280px;
+    background: #4a6fa5;
+    border: 4px solid black;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 6px 6px 0 black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+    user-select: none;
+  }
+
+  .card:hover { 
+    transform: translate(3px, 3px); 
+    box-shadow: 3px 3px 0 black;
+    background-color: #4a148c !important; 
+  }
+  
+  .card img { 
+    width: 150px;  
+    height: 150px; 
+    margin-bottom: 15px; 
+    border-radius: 8px;
+    object-fit: cover; 
+    border: 2px solid black;
+    pointer-events: none;
+  }
+
+  .card div { font-size: 10px; pointer-events: none; }
+</style>
+
+<script>
+  function launch(url) {
+    const newWin = window.open("about:blank", "_blank");
+    if (!newWin) return alert("Please allow pop-ups!");
+
+    fetch(url + "?t=" + Date.now())
+      .then(response => response.text())
+      .then(text => {
+        newWin.document.open();
+        newWin.document.write(text);
+        newWin.document.close();
+      })
+      .catch(err => {
+        console.error('Launch Error:', err);
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const container = document.getElementById('games-container');
+    
+    const games = [
+      { 
+        name: "Slope Plus", 
+        img: "https://cdn.jsdelivr.net/gh/n10cd1/n10cd1img@main/slope.jpg", 
+        url: "https://cdn.jsdelivr.net/gh/n10cd1/wow@main/Slope" 
+      },
+      { 
+        name: "Cookie Clicker", 
+        img: "https://cdn.jsdelivr.net/gh/n10cd1/wow@main/unnamed%20(1).png", 
+        url: "https://cdn.jsdelivr.net/gh/n10cd1/wow@main/Cookie%20Clicker" 
+      }
+    ];
+
+    games.forEach(game => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = '<img src="' + game.img + '"><div>' + game.name + '</div>';
+      card.onclick = () => launch(game.url);
+      container.appendChild(card);
+    });
+  });
+</script>
